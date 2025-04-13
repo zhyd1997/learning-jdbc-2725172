@@ -63,5 +63,11 @@ public class App {
         System.out.println("\n*** GET ALL SERVICES BY LIMIT ***\n");
         List<Service> limitedServices = serviceDao.getAllByLimit(3);
         limitedServices.forEach(System.out::println);
+
+        System.out.println("\n*** GET ALL CUSTOMERS BY PAGED ***\n");
+        for (int i = 1; i < 11; i += 1) {
+            System.out.println("Page number " + i);
+            customerDao.getAllPaged(i, 10).forEach(System.out::println);
+        }
     }
 }
