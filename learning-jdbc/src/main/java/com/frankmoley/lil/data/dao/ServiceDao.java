@@ -22,6 +22,7 @@ public class ServiceDao implements Dao<Service, UUID>{
   private static final String CREATE = "insert into wisdom.services (service_id, name, price) values (?,?,?)";
   private static final String UPDATE = "update wisdom.services set name = ?, price = ? where service_id = ?";
   private static final String DELETE = "delete from wisdom.services where service_id = ?";
+  private static final String GET_ALL_BY_LIMIT = "select service_id, name, price from wisdom.services order by name limit ?";
 
   @Override
   public Service create(Service entity) {
@@ -83,6 +84,22 @@ public class ServiceDao implements Dao<Service, UUID>{
     }catch(SQLException e){
       DatabaseUtils.handleSqlException("ServiceDao.getAll", e, LOGGER);
     }
+    return services;
+  }
+
+  public List<Service> getAllByLimit(int limit) {
+    List<Service> services = new ArrayList<>();
+    Connection connection = DatabaseUtils.getConnection();
+
+    try(PreparedStatement statement = connection.prepareStatement(GET_ALL_BY_LIMIT)) {
+      statement.setInt(1, limit);
+      ResultSet rs = statement.executeQuery();
+      services = this.processResultSet(rs);
+      rs.close();
+    } catch (SQLException e) {
+      DatabaseUtils.handleSqlException("ServiceDao.getAllByLimit", e, LOGGER);
+    }
+
     return services;
   }
 

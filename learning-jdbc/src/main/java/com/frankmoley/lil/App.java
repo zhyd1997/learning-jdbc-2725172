@@ -59,5 +59,9 @@ public class App {
         SimpleProductDao simpleProductDao = new SimpleProductDao();
         UUID productId = simpleProductDao.createProduct("Pizza" + System.currentTimeMillis(), new BigDecimal(4.35), "Abata");
         System.out.println("\n*** CREATE ***\n" + productId);
+
+        System.out.println("\n*** GET ALL SERVICES BY LIMIT ***\n");
+        List<Service> limitedServices = serviceDao.getAllByLimit(3);
+        limitedServices.forEach(System.out::println);
     }
 }
